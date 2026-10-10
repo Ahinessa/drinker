@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0d18">
+  <meta name="description" content="Бухарики — найди компанию для спонтанных планов, создай встречу и общайся в одном приложении.">
+  <title>Бухарики — планы лучше вместе</title>
+  <style>
+    /* ==========================================================
+       БУХАРИКИ — редактируемый лендинг в одном HTML-файле
+       Быстрые настройки находятся в :root ниже.
+       Тексты, карточки и экраны можно менять прямо в HTML.
+       ========================================================== */
+    :root {
+      --bg: #090c16;
+      --bg-soft: #101426;
+      --surface: rgba(255,255,255,.055);
+      --surface-strong: #171c31;
+      --line: rgba(255,255,255,.11);
+      --text: #f7f7fb;
+      --muted: #a7acc1;
+      --purple: #8b6cff;
+      --purple-bright: #a58dff;
+      --pink: #f37eb7;
+      --orange: #ffb36b;
+      --green: #7ce2bc;
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max-width: 1180px;
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; color: var(--text); background:
+        radial-gradient(ellipse at 15% 0%, rgba(119,83,255,.17), transparent 38rem),
+        radial-gradient(ellipse at 90% 38%, rgba(243,126,183,.08), transparent 34rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55; overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    img { max-width: 100%; }
+    .container { width: min(var(--max-width), calc(100% - 44px)); margin-inline: auto; }
+    .section { padding: 100px 0; position: relative; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; color: var(--purple-bright);
+      text-transform: uppercase; letter-spacing: .14em; font-size: .73rem; font-weight: 800;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: currentColor; border-radius: 9px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { letter-spacing: -.045em; line-height: 1.08; }
+    h1 { font-size: clamp(3rem, 6.5vw, 5.7rem); max-width: 720px; margin: 22px 0; }
+    h2 { font-size: clamp(2.1rem, 4vw, 3.6rem); margin: 16px 0 18px; }
+    h3 { font-size: 1.28rem; margin-bottom: 10px; }
+    .lead { font-size: clamp(1rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 590px; }
+    .section-intro { max-width: 720px; margin-bottom: 42px; }
+    .section-intro p { color: var(--muted); max-width: 650px; }
+    .gradient-text { color: var(--purple-bright); background: linear-gradient(100deg, #b5a4ff 0%, #8b6cff 48%, #f37eb7 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .btn {
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-height: 52px;
+      border-radius: 15px; padding: 0 22px; border: 1px solid transparent; font-weight: 750;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, #9478ff, #7254ec); color: white; box-shadow: 0 12px 34px rgba(123,91,255,.28); }
+    .btn-primary:hover { box-shadow: 0 16px 40px rgba(123,91,255,.4); }
+    .btn-secondary { border-color: var(--line); background: rgba(255,255,255,.035); color: var(--text); }
+    .btn-secondary:hover { background: rgba(255,255,255,.08); }
+    .arrow { font-size: 1.1em; }
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgba(255,255,255,.07); background: rgba(9,12,22,.78); backdrop-filter: blur(18px); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 1.25rem; font-weight: 900; letter-spacing: -.05em; white-space: nowrap; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 13px; background: linear-gradient(135deg, #a58dff, #6e4ce3); box-shadow: 0 8px 25px rgba(139,108,255,.32); font-size: 1.15rem; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: .91rem; }
+    .nav-links a:hover { color: var(--text); }
+    .nav .btn { min-height: 42px; padding: 0 16px; font-size: .88rem; }
+    .menu-toggle { display: none; background: none; color: var(--text); border: 1px solid var(--line); border-radius: 12px; width: 44px; height: 44px; font-size: 1.3rem; }
+    /* Hero */
+    .hero { min-height: 700px; padding: 82px 0 90px; display: flex; align-items: center; }
+    .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 60px; }
+    .hero-copy { position: relative; z-index: 2; }
+    .hero h1 { max-width: 710px; }
+    .hero .lead { max-width: 540px; margin-bottom: 30px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { display: flex; align-items: center; gap: 12px; margin-top: 30px; color: var(--muted); font-size: .88rem; }
+    .avatar-stack { display: flex; padding-left: 3px; }
+    .avatar-stack span { display: grid; place-items: center; width: 31px; height: 31px; margin-left: -4px; border: 2px solid var(--bg); border-radius: 50%; background: #333b5b; font-size: .85rem; }
+    .hero-art { min-height: 520px; position: relative; display: grid; place-items: center; }
+    .orb { position: absolute; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(139,108,255,.29), rgba(139,108,255,.03) 68%, transparent 70%); filter: blur(2px); }
+    .phone {
+      position: relative; width: 268px; padding: 10px; border-radius: 38px; border: 1px solid rgba(255,255,255,.22);
+      background: linear-gradient(145deg, #292d42, #090b13 55%); box-shadow: 0 36px 100px rgba(0,0,0,.55), 0 0 0 7px rgba(255,255,255,.025);
+      transform: rotate(5deg); z-index: 2;
+    }
+    .phone-screen { min-height: 485px; border-radius: 29px; padding: 22px 15px 17px; overflow: hidden; background: linear-gradient(180deg, #171b2d, #0d1120); }
+    .phone-notch { width: 78px; height: 17px; margin: -15px auto 18px; background: #05060b; border-radius: 0 0 12px 12px; }
+    .phone-greeting { font-size: .69rem; color: #b3b8cd; }
+    .phone-title { font-size: 1.45rem; line-height: 1.1; font-weight: 850; letter-spacing: -.05em; margin: 6px 0 19px; }
+    .phone-choice { min-height: 106px; border-radius: 18px; padding: 14px; margin-bottom: 11px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,.1); }
+    .phone-choice.purple { background: linear-gradient(135deg, #7253d7, #403078); }
+    .phone-choice.pink { background: linear-gradient(135deg, #b85b91, #68385d); }
+    .phone-choice .emoji { font-size: 1.65rem; }
+    .phone-choice strong { font-size: .95rem; }
+    .phone-choice small { color: rgba(255,255,255,.73); font-size: .7rem; }
+    .phone-or { text-align: center; color: #8e93aa; font-size: .75rem; margin: 8px 0; }
+    .phone-bottom { border-radius: 13px; padding: 12px; text-align: center; background: #242a42; font-size: .75rem; font-weight: 700; }
+    .float-card { position: absolute; z-index: 4; border: 1px solid rgba(255,255,255,.14); background: rgba(23,28,49,.92); box-shadow: var(--shadow); backdrop-filter: blur(14px); border-radius: 18px; padding: 14px 17px; }
+    .float-card .small { color: var(--muted); font-size: .75rem; }
+    .float-card strong { display: block; margin-top: 3px; font-size: .94rem; }
+    .float-one { top: 78px; left: -8px; transform: rotate(-5deg); }
+    .float-two { right: -10px; bottom: 70px; transform: rotate(4deg); }
+    .float-icon { display: inline-grid; place-items: center; width: 32px; height: 32px; margin-right: 7px; border-radius: 10px; background: rgba(124,226,188,.14); }
+    /* Trust strip */
+    .value-strip { border-block: 1px solid var(--line); background: rgba(255,255,255,.018); }
+    .value-grid { display: grid; grid-template-columns: repeat(3,1fr); }
+    .value-item { padding: 25px 24px; display: flex; align-items: center; justify-content: center; gap: 13px; border-right: 1px solid var(--line); }
+    .value-item:last-child { border-right: 0; }
+    .value-icon { font-size: 1.45rem; }
+    .value-item strong { display: block; font-size: .94rem; }
+    .value-item span:last-child { display: block; color: var(--muted); font-size: .8rem; }
+    /* Problem */
+    .problem-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: center; }
+    .problem-quote { font-size: clamp(1.7rem, 3.2vw, 2.7rem); line-height: 1.18; letter-spacing: -.04em; font-weight: 750; }
+    .problem-quote span { color: var(--purple-bright); }
+    .problem-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .glass-card { border: 1px solid var(--line); background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025)); border-radius: var(--radius); padding: 25px; }
+    .glass-card p { color: var(--muted); margin-bottom: 0; font-size: .94rem; }
+    .card-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px; margin-bottom: 19px; background: rgba(139,108,255,.14); font-size: 1.45rem; }
+    .glass-card:nth-child(2) .card-icon { background: rgba(243,126,183,.13); }
+    .glass-card:nth-child(3) .card-icon { background: rgba(255,179,107,.13); }
+    .glass-card:nth-child(4) .card-icon { background: rgba(124,226,188,.13); }
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .step-card { padding: 27px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); position: relative; overflow: hidden; }
+    .step-number { font-size: .78rem; font-weight: 850; letter-spacing: .12em; color: var(--purple-bright); }
+    .step-visual { min-height: 190px; display: grid; place-items: center; margin: 22px 0; border-radius: 18px; background: radial-gradient(circle at 50% 35%, rgba(139,108,255,.2), transparent 65%), #111629; border: 1px solid rgba(255,255,255,.06); }
+    .mini-ui { width: 72%; padding: 14px; border-radius: 15px; background: #1c2239; border: 1px solid rgba(255,255,255,.1); }
+    .mini-line { height: 7px; width: 68%; border-radius: 6px; background: #555d7b; margin: 0 0 9px; }
+    .mini-line.short { width: 43%; }
+    .mini-pill { display: inline-block; width: 42%; height: 48px; margin: 5px 2% 0 0; border-radius: 10px; background: linear-gradient(135deg,#8b6cff,#6043bd); }
+    .mini-pill.alt { background: linear-gradient(135deg,#c46b9d,#76436e); }
+    .mini-event { display: flex; gap: 9px; align-items: center; padding: 8px; margin-top: 8px; border-radius: 10px; background: #272e48; }
+    .mini-thumb { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 9px; background: linear-gradient(135deg,#9a7dff,#4c3d83); }
+    .mini-event .mini-line { margin: 0 0 5px; width: 75%; height: 5px; }
+    .mini-event .mini-line.short { width: 48%; margin: 0; }
+    .step-card p { color: var(--muted); font-size: .92rem; margin-bottom: 0; }
+    /* Features */
+    .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .feature-card { min-height: 220px; padding: 25px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); transition: transform .2s ease, border-color .2s ease; }
+    .feature-card:hover { transform: translateY(-4px); border-color: rgba(165,141,255,.48); }
+    .feature-card .feature-icon { font-size: 1.8rem; margin-bottom: 20px; display: block; }
+    .feature-card p { color: var(--muted); font-size: .93rem; margin-bottom: 0; }
+    /* Showcase */
+    .showcase { overflow: hidden; }
+    .showcase-panel { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; align-items: center; border: 1px solid var(--line); background: linear-gradient(135deg, rgba(139,108,255,.11), rgba(255,255,255,.025)); border-radius: 32px; padding: clamp(26px,5vw,58px); }
+    .showcase-panel p { color: var(--muted); }
+    .check-list { list-style: none; padding: 0; margin: 25px 0 0; display: grid; gap: 13px; }
+    .check-list li { display: flex; align-items: flex-start; gap: 11px; color: #dfe1ef; }
+    .check-list li::before { content: "✓"; display: grid; place-items: center; flex: 0 0 22px; height: 22px; border-radius: 50%; background: rgba(124,226,188,.14); color: var(--green); font-size: .8rem; font-weight: 900; }
+    .showcase-phones { display: flex; justify-content: center; align-items: center; gap: 15px; perspective: 1000px; }
+    .showcase-phone { width: 180px; min-height: 320px; padding: 8px; border-radius: 28px; border: 1px solid rgba(255,255,255,.2); background: #111523; box-shadow: var(--shadow); }
+    .showcase-phone:first-child { transform: rotate(-7deg) translateY(15px); }
+    .showcase-phone:last-child { transform: rotate(7deg) translateY(-10px); }
+    .showcase-screen { height: 305px; padding: 17px 10px; border-radius: 21px; background: linear-gradient(180deg,#202540,#101424); overflow: hidden; }
+    .screen-heading { font-size: .92rem; font-weight: 850; margin-bottom: 14px; }
+    .screen-map { height: 130px; border-radius: 12px; background-color: #242e43; background-image: linear-gradient(32deg,transparent 47%,rgba(124,226,188,.22) 48%,rgba(124,226,188,.22) 50%,transparent 51%),linear-gradient(120deg,transparent 40%,rgba(255,255,255,.1) 41%,rgba(255,255,255,.1) 43%,transparent 44%),linear-gradient(0deg,transparent 49%,rgba(255,255,255,.1) 50%,transparent 51%); position: relative; }
+    .map-pin { position: absolute; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--purple); font-size: .65rem; }
+    .map-pin span { transform: rotate(45deg); }
+    .map-pin.one { top: 24px; left: 30px; }.map-pin.two { top: 68px; left: 98px; background: var(--pink); }.map-pin.three { top: 39px; right: 25px; background: var(--orange); }
+    .screen-event { display: flex; align-items: center; gap: 8px; background: #292f49; border-radius: 10px; padding: 8px; margin-top: 9px; }
+    .screen-event .thumb { width: 34px; height: 34px; border-radius: 8px; background: linear-gradient(135deg,#9b83ff,#5b46b2); }
+    .screen-event b { font-size: .65rem; display: block; }.screen-event small { font-size: .55rem; color: #b0b5cb; }
+    .chat-bubble { max-width: 90%; padding: 10px; border-radius: 12px 12px 12px 3px; background: #2b314b; font-size: .64rem; margin: 8px 0; }
+    .chat-bubble.mine { margin-left: auto; background: #6f55cf; border-radius: 12px 12px 3px 12px; }
+    /* Final CTA */
+    .cta-wrap { padding: 0 0 100px; }
+    .cta { text-align: center; position: relative; overflow: hidden; padding: clamp(42px,7vw,82px) 24px; border-radius: 34px; border: 1px solid rgba(255,255,255,.15); background: radial-gradient(ellipse at 50% 120%, rgba(243,126,183,.24), transparent 48%), linear-gradient(135deg, #29204f, #15182c 62%, #111426); }
+    .cta::before, .cta::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.07); border-radius: 50%; width: 360px; height: 360px; top: -250px; left: -90px; }
+    .cta::after { left: auto; right: -100px; top: auto; bottom: -280px; width: 440px; height: 440px; }
+    .cta h2, .cta p, .cta .btn { position: relative; z-index: 1; }
+    .cta h2 { max-width: 720px; margin: 15px auto 18px; }
+    .cta p { color: #c0c1d3; max-width: 560px; margin: 0 auto 28px; }
+    /* Footer */
+    footer { border-top: 1px solid var(--line); padding: 30px 0; color: var(--muted); font-size: .85rem; }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a:hover { color: var(--text); }
+    /* Small animations */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } .reveal { opacity: 1; transform: none; } }
+    @media (max-width: 920px) {
+      .hero-grid, .problem-grid, .showcase-panel { grid-template-columns: 1fr; }
+      .hero { padding-top: 65px; }
+      .hero-art { min-height: 500px; margin-top: -5px; }
+      .hero-copy { text-align: center; }
+      .hero-copy .lead { margin-inline: auto; }
+      .hero-actions, .hero-note { justify-content: center; }
+      .problem-grid { gap: 30px; }
+      .showcase-panel { gap: 35px; }
+      .showcase-copy { max-width: 650px; }
+      .nav-links { gap: 17px; }
+    }
+    @media (max-width: 680px) {
+      .container { width: min(100% - 32px, var(--max-width)); }
+      .section { padding: 72px 0; }
+      .nav { min-height: 68px; }
+      .menu-toggle { display: inline-grid; place-items: center; }
+      .nav > .btn { display: none; }
+      .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; padding: 18px 22px 22px; flex-direction: column; align-items: stretch; gap: 0; background: rgba(9,12,22,.97); border-bottom: 1px solid var(--line); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+      h1 { font-size: clamp(2.7rem, 13vw, 4.2rem); }
+      h2 { font-size: clamp(2rem, 9vw, 3rem); }
+      .hero { padding: 58px 0 65px; min-height: auto; }
+      .hero-grid { gap: 20px; }
+      .hero-art { min-height: 460px; transform: scale(.92); margin: -12px -18px -18px; }
+      .phone { width: 250px; }
+      .phone-screen { min-height: 455px; }
+      .orb { width: 320px; height: 320px; }
+      .float-one { left: -3px; top: 57px; }
+      .float-two { right: -1px; bottom: 55px; }
+      .value-grid { grid-template-columns: 1fr; }
+      .value-item { justify-content: flex-start; padding: 18px 10px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .value-item:last-child { border-bottom: 0; }
+      .problem-cards, .steps, .features-grid { grid-template-columns: 1fr; }
+      .glass-card { padding: 21px; }
+      .step-card { padding: 22px; }
+      .step-visual { min-height: 165px; }
+      .feature-card { min-height: 0; }
+      .showcase-phones { gap: 8px; }
+      .showcase-phone { width: min(46%, 180px); min-height: 290px; }
+      .showcase-screen { height: 275px; }
+      .footer-row { align-items: flex-start; flex-direction: column; }
+      .cta-wrap { padding-bottom: 70px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===================== ШАПКА ===================== -->
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Бухарики — на главную">
+        <span class="brand-mark">✦</span><span>бухарики</span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Главная навигация">
+        <a href="#about">Идея</a>
+        <a href="#how">Как это работает</a>
+        <a href="#features">Возможности</a>
+        <a href="#screens">Интерфейс</a>
+      </nav>
+      <a class="btn btn-primary" href="#screens">Смотреть приложение <span class="arrow">↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===================== 1. HERO ===================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Планы лучше вместе</span>
+          <h1>Не с кем пойти?<br><span class="gradient-text">Найди свою компанию.</span></h1>
+          <p class="lead">«Бухарики» — концепт приложения для тех, кто хочет выбраться из дома, найти людей по интересам и превратить спонтанную идею в настоящую встречу.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#how">Как это работает <span class="arrow">↓</span></a>
+            <a class="btn btn-secondary" href="#features">Изучить возможности</a>
+          </div>
+          <div class="hero-note">
+            <div class="avatar-stack" aria-hidden="true"><span>🍕</span><span>🎬</span><span>🎲</span><span>☕</span></div>
+            <span>От бокала после работы до настолок на выходных</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Иллюстрация интерфейса приложения">
+          <div class="orb"></div>
+          <div class="float-card float-one"><span class="float-icon">📍</span><span class="small">Рядом с тобой</span><strong>Есть интересные планы</strong></div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-notch"></div>
+              <div class="phone-greeting">Привет! 👋</div>
+              <div class="phone-title">Что ищешь<br>сегодня?</div>
+              <div class="phone-choice purple"><span class="emoji">🥂</span><div><strong>Выпить</strong><br><small>Найти компанию на вечер</small></div></div>
+              <div class="phone-or">или</div>
+              <div class="phone-choice pink"><span class="emoji">🎲</span><div><strong>Провести время</strong><br><small>Кино, игры и новые места</small></div></div>
+              <div class="phone-bottom">Мои мероприятия&nbsp; ↗</div>
+            </div>
+          </div>
+          <div class="float-card float-two"><span class="small">Твоя следующая история</span><strong>✨ Начинается со встречи</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 2. КЛЮЧЕВЫЕ ЦЕННОСТИ ===================== -->
+    <div class="value-strip">
+      <div class="container value-grid">
+        <div class="value-item"><span class="value-icon">🧭</span><div><strong>Выбирай занятие</strong><span>Под настроение и интересы</span></div></div>
+        <div class="value-item"><span class="value-icon">📍</span><div><strong>Ищи рядом</strong><span>Карта и список мероприятий</span></div></div>
+        <div class="value-item"><span class="value-icon">💬</span><div><strong>Общайся</strong><span>Обсуждай планы с людьми</span></div></div>
+      </div>
+    </div>
+
+    <!-- ===================== 3. ПРОБЛЕМА / РЕШЕНИЕ ===================== -->
+    <section class="section" id="about">
+      <div class="container problem-grid">
+        <div class="reveal">
+          <span class="eyebrow">Знакомая ситуация?</span>
+          <div class="problem-quote">«Хочу куда-нибудь сходить, но <span>не с кем</span>».</div>
+          <p class="lead" style="margin-top:22px">Иногда не нужен большой план. Нужны подходящая идея и люди, которым тоже хочется провести время не в одиночку.</p>
+        </div>
+        <div class="problem-cards reveal">
+          <article class="glass-card"><div class="card-icon">🫠</div><h3>Планы откладываются</h3><p>Компания занята, друзья далеко, а желание куда-то выбраться остаётся.</p></article>
+          <article class="glass-card"><div class="card-icon">🪄</div><h3>Идея становится встречей</h3><p>Можно найти чужое мероприятие или самому предложить вариант.</p></article>
+          <article class="glass-card"><div class="card-icon">🗺️</div><h3>Варианты в одном месте</h3><p>Смотри мероприятия в списке или на карте и выбирай подходящее.</p></article>
+          <article class="glass-card"><div class="card-icon">💬</div><h3>Можно договориться</h3><p>Профили и чат помогают перейти от идеи к общению.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 4. ПОЛЬЗОВАТЕЛЬСКИЙ ПУТЬ ===================== -->
+    <section class="section" id="how" style="background:rgba(255,255,255,.018);border-block:1px solid rgba(255,255,255,.045)">
+      <div class="container">
+        <div class="section-intro reveal">
+          <span class="eyebrow">Три простых шага</span>
+          <h2>От «хочу куда-нибудь»<br>до <span class="gradient-text">«встречаемся!»</span></h2>
+          <p>Основной сценарий приложения строится вокруг простого выбора: найти готовую компанию или организовать собственную встречу.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card reveal">
+            <span class="step-number">ШАГ 01 / ВЫБОР</span>
+            <div class="step-visual">
+              <div class="mini-ui"><div class="mini-line"></div><div class="mini-line short"></div><span class="mini-pill"></span><span class="mini-pill alt"></span></div>
+            </div>
+            <h3>Выбери настроение</h3>
+            <p>Начни с идеи: выпить, сходить в кино, поиграть, посетить кафе или заняться чем-то ещё.</p>
+          </article>
+          <article class="step-card reveal">
+            <span class="step-number">ШАГ 02 / ПОИСК</span>
+            <div class="step-visual">
+              <div class="mini-ui"><div class="mini-line"></div><div class="mini-event"><div class="mini-thumb"></div><div style="flex:1"><div class="mini-line"></div><div class="mini-line short"></div></div></div><div class="mini-event"><div class="mini-thumb" style="background:linear-gradient(135deg,#f1a56a,#9a5b54)"></div><div style="flex:1"><div class="mini-line"></div><div class="mini-line short"></div></div></div></div>
+            </div>
+            <h3>Найди встречу</h3>
+            <p>Посмотри варианты в списке или на карте, изучи детали мероприятия и выбери подходящее.</p>
+          </article>
+          <article class="step-card reveal">
+            <span class="step-number">ШАГ 03 / ДЕЙСТВИЕ</span>
+            <div class="step-visual">
+              <div class="mini-ui"><div class="mini-line"></div><div class="mini-line short"></div><div style="height:12px"></div><div style="height:38px;border-radius:10px;background:linear-gradient(90deg,#7658e7,#a88cff);display:grid;place-items:center;font-size:.7rem;font-weight:800">Создать встречу</div><div class="mini-line" style="margin-top:13px;width:80%"></div></div>
+            </div>
+            <h3>Договорись и иди</h3>
+            <p>Присоединяйся к мероприятию или создай своё, а затем переходи к общению с участниками.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 5. ВОЗМОЖНОСТИ ===================== -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-intro reveal">
+          <span class="eyebrow">Возможности</span>
+          <h2>Всё для планов<br><span class="gradient-text">без лишней сложности</span></h2>
+          <p>Ключевые функции, заложенные в макет приложения «Бухарики».</p>
+        </div>
+        <div class="features-grid">
+          <article class="feature-card reveal"><span class="feature-icon">🍻</span><h3>Занятия под настроение</h3><p>Выбирай, чем хочется заняться: от похода в бар до кино, кафе, спорта или настольных игр.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">🗺️</span><h3>Карта и список</h3><p>Два способа посмотреть доступные мероприятия и оценить, что находится поблизости.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">🎟️</span><h3>Карточки мероприятий</h3><p>Смотри тему встречи, организатора, время и доступные места — в соответствии с карточкой события.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">✨</span><h3>Создание встречи</h3><p>Предложи собственный план и дай другим возможность найти твоё мероприятие.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">👤</span><h3>Профили пользователей</h3><p>Открывай профиль собеседника и знакомься с информацией, предусмотренной интерфейсом.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">💌</span><h3>Чаты и сообщения</h3><p>Обсуждай детали встречи и поддерживай общение внутри приложения.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6. ВИЗУАЛЬНАЯ ДЕМОНСТРАЦИЯ ===================== -->
+    <section class="section showcase" id="screens">
+      <div class="container">
+        <div class="showcase-panel reveal">
+          <div class="showcase-copy">
+            <span class="eyebrow">Знакомство с интерфейсом</span>
+            <h2>Планы, люди<br>и места — <span class="gradient-text">рядом</span></h2>
+            <p>Интерфейс помогает быстро перейти от выбора занятия к поиску встречи. Ниже — концептуальная демонстрация двух ключевых сценариев: поиск мероприятий и общение.</p>
+            <ul class="check-list">
+              <li>Выбор занятия с главного экрана</li>
+              <li>Просмотр мероприятий на карте и в списке</li>
+              <li>Переход к профилям и сообщениям</li>
+            </ul>
+            <!-- ЗАМЕНА: сюда можно добавить ссылку на публичный прототип Figma -->
+            <a class="btn btn-primary" style="margin-top:28px" href="https://www.figma.com/design/JxdGH2jFsOnQSF3UsyQbC8/%D0%91%D1%83%D1%85%D0%B0%D1%80%D0%B8%D0%BA%D0%B8" target="_blank" rel="noopener noreferrer">Открыть макет в Figma <span class="arrow">↗</span></a>
+          </div>
+          <div class="showcase-phones" aria-label="Декоративные примеры экранов карты и чата">
+            <div class="showcase-phone">
+              <div class="showcase-screen">
+                <div class="screen-heading">Что рядом? 📍</div>
+                <div class="screen-map"><span class="map-pin one"><span>•</span></span><span class="map-pin two"><span>•</span></span><span class="map-pin three"><span>•</span></span></div>
+                <div class="screen-event"><div class="thumb"></div><div><b>Настолки сегодня</b><small>18:00 · Есть места</small></div></div>
+                <div class="screen-event"><div class="thumb" style="background:linear-gradient(135deg,#f1a56a,#a95772)"></div><div><b>Идём в бар</b><small>Сегодня вечером</small></div></div>
+              </div>
+            </div>
+            <div class="showcase-phone">
+              <div class="showcase-screen">
+                <div class="screen-heading">Сообщения 💬</div>
+                <div class="chat-bubble">Привет! Ты тоже идёшь на настолки?</div>
+                <div class="chat-bubble mine">Да, планирую быть к шести 😊</div>
+                <div class="chat-bubble">Супер, тогда увидимся там!</div>
+                <div class="chat-bubble mine">Договорились ✨</div>
+                <div style="height:38px;border:1px solid rgba(255,255,255,.13);border-radius:12px;margin-top:25px;color:#8f96b0;font-size:.6rem;padding:10px">Написать сообщение…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 7. ФИНАЛЬНЫЙ ПРИЗЫВ ===================== -->
+    <section class="cta-wrap">
+      <div class="container">
+        <div class="cta reveal">
+          <span class="eyebrow">Твоя очередь</span>
+          <h2>Одна идея может стать <span class="gradient-text">классным вечером</span></h2>
+          <p>«Бухарики» — концепт приложения, которое помогает превращать желание куда-нибудь сходить в возможность найти компанию.</p>
+          <a class="btn btn-primary" href="https://www.figma.com/design/JxdGH2jFsOnQSF3UsyQbC8/%D0%91%D1%83%D1%85%D0%B0%D1%80%D0%B8%D0%BA%D0%B8" target="_blank" rel="noopener noreferrer">Посмотреть прототип <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== ПОДВАЛ ===================== -->
+  <footer>
+    <div class="container footer-row">
+      <a class="brand" href="#top"><span class="brand-mark">✦</span><span>бухарики</span></a>
+      <span>Концепт мобильного приложения · <span id="year"></span></span>
+      <div class="footer-links"><a href="#about">Об идее</a><a href="#features">Возможности</a><a href="#top">Наверх ↑</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // Мобильная навигация
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.textContent = isOpen ? '×' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+
+    // Ненавязчивое появление секций при прокрутке
+    const revealItems = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+
+    // Автоматический год в подвале
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
