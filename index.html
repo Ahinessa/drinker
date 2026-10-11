@@ -177,6 +177,19 @@
     .screen-event b { font-size: .65rem; display: block; }.screen-event small { font-size: .55rem; color: #b0b5cb; }
     .chat-bubble { max-width: 90%; padding: 10px; border-radius: 12px 12px 12px 3px; background: #2b314b; font-size: .64rem; margin: 8px 0; }
     .chat-bubble.mine { margin-left: auto; background: #6f55cf; border-radius: 12px 12px 3px 12px; }
+    /* Shared interests section — layout inspired by the reference */
+    .interest-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: 58px; align-items: center; }
+    .interest-copy h2 { font-size: clamp(2rem, 3.5vw, 3.15rem); }
+    .interest-copy p { max-width: 440px; color: var(--muted); }
+    .interest-emphasis { color: var(--text); font-weight: 750; }
+    .interest-window { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .interest-card { min-height: 142px; padding: 20px; border: 1px solid rgba(255,255,255,.07); border-radius: 19px; background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); box-shadow: 0 18px 45px rgba(0,0,0,.12); }
+    .interest-card-icon { display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 12px; border-radius: 10px; background: rgba(139,108,255,.16); font-size: 1.15rem; }
+    .interest-card:nth-child(2) .interest-card-icon { background: rgba(124,226,188,.13); }
+    .interest-card:nth-child(3) .interest-card-icon { background: rgba(255,179,107,.13); }
+    .interest-card:nth-child(4) .interest-card-icon { background: rgba(243,126,183,.13); }
+    .interest-card h3 { font-size: .98rem; letter-spacing: -.025em; margin-bottom: 7px; }
+    .interest-card p { color: var(--muted); font-size: .78rem; line-height: 1.45; margin: 0; }
     /* Final CTA */
     .cta-wrap { padding: 0 0 100px; }
     .cta { text-align: center; position: relative; overflow: hidden; padding: clamp(42px,7vw,82px) 24px; border-radius: 34px; border: 1px solid rgba(255,255,255,.15); background: radial-gradient(ellipse at 50% 120%, rgba(243,126,183,.24), transparent 48%), linear-gradient(135deg, #29204f, #15182c 62%, #111426); }
@@ -195,13 +208,14 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
     @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } .reveal { opacity: 1; transform: none; } }
     @media (max-width: 920px) {
-      .hero-grid, .problem-grid, .showcase-panel { grid-template-columns: 1fr; }
+      .hero-grid, .problem-grid, .showcase-panel, .interest-grid { grid-template-columns: 1fr; }
       .hero { padding-top: 65px; }
       .hero-art { min-height: 500px; margin-top: -5px; }
       .hero-copy { text-align: center; }
       .hero-copy .lead { margin-inline: auto; }
       .hero-actions, .hero-note { justify-content: center; }
       .problem-grid { gap: 30px; }
+      .interest-grid { gap: 28px; }
       .showcase-panel { gap: 35px; }
       .showcase-copy { max-width: 650px; }
       .nav-links { gap: 17px; }
@@ -229,6 +243,8 @@
       .value-item { justify-content: flex-start; padding: 18px 10px; border-right: 0; border-bottom: 1px solid var(--line); }
       .value-item:last-child { border-bottom: 0; }
       .problem-cards, .steps, .features-grid { grid-template-columns: 1fr; }
+      .interest-window { gap: 10px; }
+      .interest-card { padding: 16px; min-height: 150px; }
       .glass-card { padding: 21px; }
       .step-card { padding: 22px; }
       .step-visual { min-height: 165px; }
@@ -377,7 +393,42 @@
       </div>
     </section>
 
-    <!-- ===================== 6. ВИЗУАЛЬНАЯ ДЕМОНСТРАЦИЯ ===================== -->
+
+    <!-- ===================== 6. ТОВАРИЩИ ПО ИНТЕРЕСАМ ===================== -->
+    <section class="section" id="interests">
+      <div class="container interest-grid">
+        <div class="interest-copy reveal">
+          <span class="eyebrow">Знакомая ситуация?</span>
+          <h2>Находи товарищей <span class="gradient-text">по интересам</span></h2>
+          <p class="interest-emphasis">Вам уже есть о чём договориться — ведь вам хочется одного и того же.</p>
+          <p>Хочешь на настолки, в кино, на прогулку или просто выбраться куда-нибудь? Находи людей, которым интересна та же идея, и превращай общее желание в реальные планы.</p>
+        </div>
+        <div class="interest-window reveal" aria-label="Как общие интересы помогают найти компанию">
+          <article class="interest-card">
+            <span class="interest-card-icon">🎲</span>
+            <h3>Совпадают интересы</h3>
+            <p>Вы оба хотите поиграть, посмотреть фильм или попробовать новое место.</p>
+          </article>
+          <article class="interest-card">
+            <span class="interest-card-icon">🤝</span>
+            <h3>Идея становится встречей</h3>
+            <p>Не нужно долго искать тему для знакомства — вас уже объединяет план.</p>
+          </article>
+          <article class="interest-card">
+            <span class="interest-card-icon">🗺️</span>
+            <h3>Варианты в одном месте</h3>
+            <p>Смотри подходящие мероприятия в списке или на карте и выбирай своё.</p>
+          </article>
+          <article class="interest-card">
+            <span class="interest-card-icon">💬</span>
+            <h3>Легче договориться</h3>
+            <p>Обсудите время и детали — и отправляйтесь заниматься тем, что нравится обоим.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 7. ВИЗУАЛЬНАЯ ДЕМОНСТРАЦИЯ ===================== -->
     <section class="section showcase" id="screens">
       <div class="container">
         <div class="showcase-panel reveal">
@@ -417,7 +468,7 @@
       </div>
     </section>
 
-    <!-- ===================== 7. ФИНАЛЬНЫЙ ПРИЗЫВ ===================== -->
+    <!-- ===================== 8. ФИНАЛЬНЫЙ ПРИЗЫВ ===================== -->
     <section class="cta-wrap">
       <div class="container">
         <div class="cta reveal">
